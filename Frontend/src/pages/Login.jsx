@@ -1,106 +1,110 @@
-import React from 'react';
+import React, { useContext, useState } from 'react'
+import { Link,useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../../config'
+import { toast } from 'react-toastify'
+import {authContext} from '../context/AuthContext.jsx'
+import HashLoader from 'react-spinners/HashLoader.js' 
 
 const Login = () => {
-  return (
-    <div className="h-full bg-[#004e89] w-full pb-20 px-4">
-      <div className="flex flex-col items-center justify-center">
-        <svg
-          tabIndex="0"
-          className="focus:outline-none"
-          aria-label="logo"
-          role="banner"
-          width="188"
-          height="74"
-          viewBox="0 0 188 74"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* ... SVG Path ... */}
-        </svg>
 
-        <div className="bg-white shadow rounded-lg lg:w-1/3 md:w-1/2 w-full p-10 mt-16">
-          <p
-            tabIndex="0"
-            className="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800"
-          >
-            Login to your account
-          </p>
-          <p
-            tabIndex="0"
-            className="focus:outline-none text-sm mt-4 font-medium leading-none text-gray-500"
-          >
-            Don't have an account?{' '}
-            <a
-              href="javascript:void(0)"
-              className="hover:text-gray-500 focus:text-gray-500 focus:outline-none focus:underline hover:underline text-sm font-medium leading-none text-gray-800 cursor-pointer"
-            >
-              Sign up here
-            </a>
-          </p>
-          <button
-  aria-label="Continue with google"
-  role="button"
-  className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-red-500 bg-red-500 flex items-center w-full mt-10"
->
-  {/* ... Google SVG ... */}
-  <p className="text-base font-medium ml-4 text-white">
-    Continue with Google
-  </p>
-</button>
-  
-          
-          <div className="w-full flex items-center justify-between py-5">
-            <hr className="w-full bg-gray-400" />
-            <p className="text-base font-medium leading-4 px-2.5 text-gray-400">
-              OR
-            </p>
-            <hr className="w-full bg-gray-400" />
-          </div>
-          <div>
-            <label
-              id="email"
-              className="text-sm font-medium leading-none text-gray-800"
-            >
-              Email
-            </label>
-            <input
-              aria-labelledby="email"
-              type="email"
-              className="bg-gray-200 border rounded text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2"
+  const [formData, setFormData] = useState({
+    email:'',
+    password:'' 
+  })
+
+  const [loading,setLoading] = useState(false)
+  const navigate = useNavigate()
+  const {dispatch} = useContext(authContext)
+
+  const handleInputChange = e=>{
+    setFormData({...formData,[e.target.name]:e.target.value})
+  }
+
+  const submitHandler = async event =>{
+    
+    event.preventDefault();
+    setLoading(true)
+
+    try {
+
+      
+
+      const res = await fetch(`${BASE_URL}/auth/login`,{
+        method:'post',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify(formData)
+      })
+
+      const result = await res.json()
+
+      
+
+      if(!res.ok){
+        throw new Error(result.message)
+      }
+
+
+      dispatch({
+        type:'LOGIN_SUCCESS',
+        payload:{
+          user: result.data,
+          token:result.token,
+          role:result.role,
+        }
+
+      })
+
+      console.log(result,"login data");
+
+      setLoading(false)
+      toast.success(result.message)
+      navigate('/home')
+
+      
+    } catch (error) {
+      toast.error(error.message)
+      setLoading(false)
+      console.log(error);
+      
+    }
+  }
+
+  return (
+    <section className='px-5 lg:px-0'>
+      <div className='w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10'>
+        <h3 className='text-headingColor text-[22px] leading-9 font-bold mb-10'>
+          Hello!<span className='text-primaryColor '>Welcome</span>Back
+        </h3>
+        
+        <form className='py-4 md:py-0'>
+          <div className='mb-5'>
+            <input type='email' placeholder='Enter your Email' name='email' value={formData.email} onChange={handleInputChange}
+            className='w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[22px] leading-7 text-headingColor placeholder:text-textColor rounded-md cursor-pointer'
+            required
             />
           </div>
-          <div className="mt-6 w-full">
-            <label
-              htmlFor="pass"
-              className="text-sm font-medium leading-none text-gray-800"
-            >
-              Password
-            </label>
-            <div className="relative flex items-center justify-center">
-              <input
-                id="pass"
-                type="password"
-                className="bg-gray-200 border rounded text-xs font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2"
-              />
-              <div className="absolute right-0 mt-2 mr-3 cursor-pointer">
-                {/* ... Eye SVG ... */}
-              </div>
-            </div>
+          <div className='mb-5'>
+            <input type='password' placeholder='Password' name='password' value={formData.password} onChange={handleInputChange}
+            className='w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[22px] leading-7 text-headingColor placeholder:text-textColor rounded-md cursor-pointer'
+            required
+            />
           </div>
-          <div className="mt-8">
-            <button
-              role="button"
-              className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full"
-            >
-              Login
+          <div className='mt-7'>
+            <button onClick={submitHandler} type='sumbit' className='w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3'>
+              {loading?<HashLoader size={25} color='#fff'/>:'Login'}
             </button>
           </div>
-        </div>
+
+          <p className='mt-5 text-textColor text-center'>
+              Don&apos;t have an account? <Link to='/Signup' className='text-primaryColor'>Register</Link>
+          </p>
+        </form>
+
       </div>
-    </div>
-  );
-};
+    </section>
+  )
+}
 
-export default Login;
-
-
+export default Login

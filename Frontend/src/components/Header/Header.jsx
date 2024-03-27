@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import logo from '../../assets/images/logo.png';
-import userImg from '../../assets/images/avatar.jpg';
+import { authContext } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom';
+
 import { NavLink, Link } from 'react-router-dom';
 import {BiMenu} from 'react-icons/bi'
-import { TERipple } from 'tw-elements-react';
+import { useRef } from 'react';
+
 
 
 
@@ -13,16 +16,16 @@ const navLinks = [
     display: 'Home'
   },
   {
-    path: '/Cart',
-    display: 'Cart'
+    path: '/doctors',
+    display: 'Find a doctor'
   },
   {
     path: '/contact',
     display: 'Contact'
   },
   {
-    path: '/Suppliersignup',
-    display: 'Become a Seller'
+    path: '/Services',
+    display: 'Services'
   },
 ];
 
@@ -33,28 +36,79 @@ const navLinks = [
 
 function Header() {
 
+  const headerRef = useRef(null)
+  const menuRef = useRef(null) 
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const {user,role,token} = useContext(authContext)
+  const {dispatch} = useContext(authContext)
+  const navigate = useNavigate();
+
+
+
+  const handleLogout = ()=>{
+    dispatch({type:'LOGOUT'});
+    navigate('/login')
+}
+
+
+
+
+  const handleScroll = () => {
+    const currentScrollPos = window.pageYOffset;
+    setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 80);
+    setPrevScrollPos(currentScrollPos);
+  };
+
+  const handleStickyHeader = ()=>{
+    window.addEventListener("scroll",()=>{
+      if(document.body.scrollTop > 80 || document.documentElement.scrollTop > 80){
+        headerRef.current.classList.add("sticky__header")
+
+      }else{
+        headerRef.current.classList.remove("sticky__header")
+      }
+    })
+  }
+
+  useEffect(()=>{
+    handleStickyHeader()
+
+    return()=> window.removeEventListener('scroll',handleStickyHeader)
+  })
+
+  const toggleMenu = () => {
+    console.log(menuRef.current.classList);
+    if (menuRef.current) {
+      menuRef.current.classList.toggle("show__menu");
+      console.log("After toggling:", menuRef.current.classList);
+    } else {
+      console.error("menuRef is not properly initialized.");
+    }
+  }
+  
   
 
   return (
 
     
 
-    <header className='header flex items-center'>
+    <header className={`header flex items-center ${visible ? '' : 'hidden'}`}>
       <div className='container'>
         <div className='flex items-center justify-between'>
         
           <div>
             <img src={logo} alt="Logo" style={{ width: '110px', height: 'auto' }} />
           </div>
-
-          <div className='navigation'>
+  
+          <div className='navigation hidden md:block' ref={menuRef} onClick={toggleMenu}>
             <ul className='menu flex items-center gap-[2.7rem]'>
               {navLinks.map((link, index) => (
                 <li key={index}>  
                   <NavLink
                     to={link.path}
                     activeClassName="text-blue-600 font-bold"
-                    className="text-black-500 text-base leading-7 font-medium hover:text-blue-600"
+                    className="text-black-500 text-base leading-7 font-medium hover:text-blue-600 whitespace-nowrap"
                   >
                     {link.display}
                   </NavLink>
@@ -62,7 +116,7 @@ function Header() {
               ))}
             </ul>
           </div>
-
+ 
           <div className="flex items-center mb-3 xl:w-96">
     <input
         type="search"
@@ -78,24 +132,36 @@ function Header() {
         Search
     </button>
 </div>
-                        
+                          
                         
           
 
           <div className='flex items-center gap-4'>
-            <Link to='/'>
-              <figure className='w-[35px] h-[35px] rounded-full cursor-pointer'>
-                <img src={userImg} className='w-full rounded-full' alt=""/>
-              </figure>
-            </Link>
+
+            {
+              token && user ? 
+              <div className="flex items-center justify-between">
+              <Link to={`${role === 'doctor' ? '/doctors/profile/me' : '/users/profile/me'}`}>
+                <figure className='w-[35px] h-[35px] rounded-full cursor-pointer mr-2'>
+                  <img src={user?.photo} className='w-full rounded-full' alt=""/>
+                </figure>
+              </Link>
+              
+              <button onClick={handleLogout} className='bg-primaryColor py-1 px-2 text-white text-sm font-[600] rounded-[50px]'>
+                Logout
+              </button>
+            </div>
+            :
 
             <Link to='/login'>
-              <button className='bg-primaryColor py-2 px-4 text-white font-[600] h-[35px] flex items-center justify-center rounded-[50px]'>Login</button>
+              <button className='bg-primaryColor py-4 px-7 text-white font-[600] h-[35px] flex items-center justify-center rounded-[50px]'>Login</button>
             </Link>
+}
 
-           <span >
+
+            <span className='md:hidden' onClick={toggleMenu}>
             <BiMenu className='w-6 h-6 cursor-pointer'/>
-           </span>
+            </span>
 
           </div>
         </div>
