@@ -6,6 +6,7 @@ export const updateDoctor = async(req,res)=>{
 try {
 
     const updateDoctor = await Doctor.findByIdAndUpdate(id,{$set:req.body},{new:true})
+    console.log('body',req.body);
 
     res.status(200).json({sucess:true,message:'Sucessfully updated',data:updateDoctor})
     
@@ -33,17 +34,9 @@ try {
 export const getSingleDoctor = async(req,res)=>{
     const id = req.params.id
 
-    
-
 try {
 
     const doctor = await Doctor.findById(id);
-
-    
-
-    
-
-
     res.status(200).json({sucess:true,message:'Doctor Found',data:doctor})
     
 } catch (error) {
@@ -51,30 +44,28 @@ try {
     
 }
 }
-export const getAllDoctor = async(req,res)=>{
-try {
-
-    const {query} =  req.query
-    let doctorss;
-
-    if(query){
-
-        doctorss = await Doctor.find({isApproved:'approved',$or:[{name:{$regex:query,$options:'i'}}]})
-
-    }else{
-
-        const doctors = await Doctor.find({isApproved:'approved'})
-
-
-    res.status(200).json({sucess:true,message:'Doctor Found',data:doctors})
+export const getAllDoctor = async (req, res) => {
+    try {
+      const { query } = req.query;
+  
+      if (query) {
+        const doctors = await Doctor.find({
+          isApproved: 'approved',
+          name: { $regex: query, $options: 'i' } // Using regex to perform case-insensitive search
+        });
+  
+        return res.status(200).json({ success: true, message: 'Doctors Found', data: doctors });
+      }
+  
+      // If there's no query, return all approved doctors
+      const doctors = await Doctor.find({ isApproved: 'approved' });
+  
+      res.status(200).json({ success: true, message: 'Doctors Found', data: doctors });
+    } catch (error) {
+      res.status(404).json({ success: false, message: 'Not found' });
     }
-    
-} catch (error) {
-    
-    res.status(404).json({sucess:false,message:'Not found',})
-    
-}
-}
+  };
+  
 
 export const getDoctorProfile = async (req,res)=>{
     const userId = req.userId

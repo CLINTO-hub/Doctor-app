@@ -6,6 +6,9 @@ import { toast } from 'react-toastify'
 
 const useFetchData = (url,authToken) => {
 
+  console.log('auth',authToken);
+
+  
  
 
     const [data,setData] = useState([])
@@ -22,8 +25,10 @@ const useFetchData = (url,authToken) => {
                 headers:{Authorization: `Bearer ${authToken}`}
             });
 
+            
+
             const result = await res.json()
-            console.log(result);
+            console.log('result',result);
 
          
 

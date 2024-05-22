@@ -73,9 +73,9 @@ const Login = () => {
 
   return (
     <section className='px-5 lg:px-0'>
-      <div className='w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10'>
+      <div className='w-full max-w-[700px] mx-auto rounded-lg shadow-md md:p-10'>
         <h3 className='text-headingColor text-[22px] leading-9 font-bold mb-10'>
-          Hello!<span className='text-primaryColor '>Welcome</span>Back
+          Hello! <span className='text-primaryColor '>Welcome</span> Back
         </h3>
         
         <form className='py-4 md:py-0'>
@@ -92,13 +92,13 @@ const Login = () => {
             />
           </div>
           <div className='mt-7'>
-            <button onClick={submitHandler} type='sumbit' className='w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3'>
+            <button onClick={submitHandler} type='sumbit' className='w-full bg-blue-600 hover:bg-blue-800 text-white text-[18px] leading-[30px] rounded-lg px-4 py-3'>
               {loading?<HashLoader size={25} color='#fff'/>:'Login'}
             </button>
           </div>
 
           <p className='mt-5 text-textColor text-center'>
-              Don&apos;t have an account? <Link to='/Signup' className='text-primaryColor'>Register</Link>
+              Don&apos;t have an account? <Link to='/Signup' className='text-blue-600'>Register</Link>
           </p>
         </form>
 

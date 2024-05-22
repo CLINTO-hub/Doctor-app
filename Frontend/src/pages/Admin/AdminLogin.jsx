@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../../../config.js'
 import { toast } from 'react-toastify'
@@ -16,6 +16,17 @@ const AdminLogin = () => {
   const navigate = useNavigate()
   const {dispatch} = useContext(authContext)
 
+  useEffect(() => {
+    const adminToken = localStorage.getItem('User');
+    
+    if (adminToken) {
+      navigate('/Admin/Dashboard');
+    }
+  }, [navigate]);
+
+
+    
+
   const handleInputChange = e=>{
     setFormData({...formData,[e.target.name]:e.target.value})
   }
@@ -30,7 +41,7 @@ const AdminLogin = () => {
 
 
     try {
-      const res = await fetch(`${BASE_URL}/admins/Admin/Login`,{
+      const res = await fetch(`${BASE_URL}/admin/Login`,{
         method:'post',
         headers:{
           'Content-Type':'application/json'
@@ -38,6 +49,8 @@ const AdminLogin = () => {
         body:JSON.stringify(formData)
       })
       const result = await res.json()
+
+      console.log('result',result);
 
       if(!res.ok){
         throw new Error(result.message)

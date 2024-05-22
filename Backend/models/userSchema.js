@@ -8,9 +8,9 @@ const UserSchema = new mongoose.Schema({
   photo: { type: String },
   role: {
     type: String,
-    enum: ["patient", "admin"],
     default: "patient",
   },
+  is_Blocked: { type: Boolean, default: false },
   gender: { type: String, enum: ["male", "female", "other"] },
   bloodType: { type: String },
   appointments: [{ type: mongoose.Types.ObjectId, ref: "Appointment" }],

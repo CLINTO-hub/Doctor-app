@@ -3,14 +3,18 @@ import Loader from '../../components/loader/Loading'
 import useFetchData from "../../hooks/useFetchData"
 import { BASE_URL,token } from "../../../config"
 import Tabs from "./Tabs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import DoctorAbout from '../../pages/Doctor/DoctorAbout.jsx'
 import Profile from "./Profile.jsx"
+import Appointments from "./Appointments.jsx"
 
 
 
 const Dashboard = () => {
+
   const {data,loading,error} = useFetchData(`${BASE_URL}/doctors/profile/me`,token)
+
+  console.log('data',data.appointments);
 
   const[tab,setTab] = useState('overview')
   return (
@@ -44,9 +48,9 @@ const Dashboard = () => {
                       <img src={data?.photo} alt="" className="w-full"/>
                     </figure>
                     <div>
-                      <span className="bg-[#CCF0F3] text-irisBlueColor py-1 px-4 lg:py-2 lg:px-6 rounded text-[12px] leading-4 lg:text-[16px] lg:leading-6 font-semibold">Surgeon</span>
+                      <span className="bg-[#CCF0F3] text-irisBlueColor py-1 px-4 lg:py-2 lg:px-6 rounded text-[12px] leading-4 lg:text-[16px] lg:leading-6 font-semibold">{data.specialization}</span>
                      <h3 className="text-[22px] leading-9 font-bold text-headingColor mt-3">{data?.name}</h3>
-                     <p className="text__para font-[15px] lg:max-w-[390px] leading-6">doctor bio</p>
+                     <p className="text__para font-[15px] lg:max-w-[390px] leading-6">{data?.bio}</p>
                      
                       </div>
                      </div>
@@ -55,8 +59,9 @@ const Dashboard = () => {
                   <DoctorAbout name={data.name} about={data.about} qualifications={data.qualifications} experiences={data.experiences}  />
                   
                   </div>}
-                {tab==='appointments'  && <div>appointments</div>}
-                {tab==='settings'  && <Profile/>}
+                  
+                {tab==='appointments'  && <Appointments appointments={data.appointments}/>}
+                {tab==='settings'  && <Profile doctorData={data}/>}
 
                 </div>
 

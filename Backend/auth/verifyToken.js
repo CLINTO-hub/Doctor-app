@@ -6,6 +6,9 @@ import  Admin  from '../models/adminSchema.js'
 export const authenticate = async(req,res,next)=>{
     const authToken = req.headers.authorization
 
+
+    console.log('authtoken',authToken);
+
     
 
     if(!authToken || !authToken.startsWith("Bearer")){
@@ -15,23 +18,19 @@ export const authenticate = async(req,res,next)=>{
     }
 
     try {
-       const token = authToken.split(" ")[1];
+       const token = authToken.trim().split(" ")[1];
        
-      
 
-      
-
-      
-       console.log('hiii');
-       console.log('envvv',process.env.JWT_SECERT_KEY);
-
-       console.log('token',token);
+     
 
        
 
        const decoded = jwt.verify(token,process.env.JWT_SECERT_KEY)
 
-       console.log('ded',decoded);
+
+       
+
+       
        
        
        
@@ -61,6 +60,7 @@ export const restrict =(roles)=> async(req,res,next)=>{
     let user;
 
     const patient = await User.findById(userId)
+    const admin = await Admin.findById(userId)
     const doctor = await Doctor.findById(userId)
     
 
@@ -69,6 +69,10 @@ export const restrict =(roles)=> async(req,res,next)=>{
     }
     if(doctor){
         user = doctor
+    }
+
+    if(admin){
+        user = admin
     }
     
 
@@ -79,3 +83,5 @@ export const restrict =(roles)=> async(req,res,next)=>{
     }
     next()
 }
+
+

@@ -11,7 +11,7 @@ export const updateUser = async(req,res)=>{
         const updatedUser = await User.findByIdAndUpdate(id,{$set:req.body},{new:true})
         res.status(200).json({success:true,message:'Successfully updated',data:updatedUser})
     } catch (error) {
-        res.status(500).json({success:false,message:'Failed to update'});
+        res.status(500).json({success:false,message:'Failed to update the data'});
         
     }
 }
@@ -94,15 +94,29 @@ export const getMyAppointments = async(req,res)=>{
     try {
 
         const bookings = await Booking.find({user:req.userId})
-        
-        const doctorIds = bookings.map(el=>el.doctor.id)
+
+        const doctorIds = bookings.map(el=>el.doctor.toString())
 
         const doctors = await Doctor.find({_id:{$in:doctorIds}}).select('-password')
         res.status(200).json({success:true, message:'Appointment are getting',data:doctors})
+
+        console.log('hello');
+
+        
         
     } catch (error) {
+        console.log(error.message);
         res.status(500).json({success:false,message:"Something went wrong,cannot get"})
         
     }
     
 }
+
+export const getTotalPatients = async (req, res) => {
+    try {
+        const totalPatients = await User.countDocuments();
+        res.status(200).json({ success: true, message: 'Total number of patients retrieved', data: totalPatients });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to retrieve total number of patients' });
+    }
+};

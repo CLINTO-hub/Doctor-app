@@ -12,6 +12,7 @@
   "author": "Clinto George",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -20,6 +21,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.1",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
+    "stripe": "^14.23.0"
   }
 }

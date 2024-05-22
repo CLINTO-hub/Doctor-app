@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-
 import { BASE_URL, token } from '../../../config'
-
-
 import {useNavigate } from 'react-router-dom'
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary'
 import { toast } from 'react-toastify'
 import HashLoader from 'react-spinners/HashLoader'
+
+
 
 const Profile = ({user}) => {
   
