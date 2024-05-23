@@ -16,6 +16,39 @@ const Dashboard = () => {
 
   console.log('data',data.appointments);
 
+
+
+  const [appdata,setAppData] = useState('')
+
+  const doctor = JSON.parse(localStorage.getItem('user'));
+  const doctorId = doctor ? doctor._id : null;
+  console.log('doctor', doctorId);
+
+useEffect(()=>{
+  const fetchData = async()=>{
+    try {
+      const res = await fetch(`${BASE_URL}/bookings/allBookings/${doctorId}`,{
+        headers:{
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const newdata = await res.json();
+      setAppData(newdata.data)
+
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+  }
+fetchData()
+},[token,doctorId])
+
+console.log('appp',appdata);
+  
+
   const[tab,setTab] = useState('overview')
   return (
    <section>
@@ -60,7 +93,7 @@ const Dashboard = () => {
                   
                   </div>}
                   
-                {tab==='appointments'  && <Appointments appointments={data.appointments}/>}
+                {tab==='appointments'  && <Appointments appointments={appdata}/>}
                 {tab==='settings'  && <Profile doctorData={data}/>}
 
                 </div>

@@ -9,7 +9,7 @@ import { BASE_URL } from '../../../config.js';
 import {io} from 'socket.io-client';
 
 
-const socket = io(BASE_URL);
+const socket = io("http://localhost:5000");
 
 console.log('socket',socket);
 
@@ -31,6 +31,8 @@ function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
+  console.log('user',user);
+
 
  
   const handleSearch = () => {
@@ -39,44 +41,45 @@ function Header() {
 
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/notification/getNotifications/${user._id}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch notifications');
-        }
-        const data = await response.json();
-        const unseenNotifications = data.result.filter(notification => !notification.is_Seen);
-        setNotifications(unseenNotifications);
-      } catch (error) {
-        console.error('Error fetching notifications:', error);
-      }
-    };
-
     if (token && user) {
+      const socket = io("http://localhost:5000");
+
+      socket.on('connect', () => {
+        console.log('Connected to socket.io server');
+        socket.emit('join', user);
+      });
+
+      const fetchNotifications = async () => {
+        try {
+          const response = await fetch(`${BASE_URL}/notification/getNotifications/${user._id}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch notifications');
+          }
+          const data = await response.json();
+          const unseenNotifications = data.result.filter(notification => !notification.is_Seen);
+          setNotifications(unseenNotifications);
+        } catch (error) {
+          console.error('Error fetching notifications:', error);
+        }
+      };
+
       fetchNotifications();
+
+      socket.on('notification', (newNotification) => {
+        if (newNotification.doctorId === user._id) {
+          setNotifications(prev => [...prev, newNotification]);
+        }
+      });
+
+      return () => {
+        socket.off('notification');
+        socket.disconnect();
+      };
     }
-
-    socket.on('connect', () => {
-      console.log('Connected to socket.io server');
-    });
-
-    socket.emit('join', user);
-
-    socket.on('notification', (newNotification) => {
-      if (newNotification.doctorId === user) {
-        setNotifications((prev) => [...prev, newNotification]);
-      }
-    });
-
-    return () => {
-      socket.off('notification');
-      
-    };
   }, [token, user]);
 
   const chatPass = () => {
@@ -184,7 +187,7 @@ function Header() {
               <div className="flex items-center justify-between">
                 <Link to={`${role === 'doctor' ? '/doctors/profile/me' : '/users/profile/me'}`}>
                   <figure className="w-[35px] h-[35px] rounded-full cursor-pointer mr-2">
-                    <img src={user?.photo} className="w-full rounded-full" alt="" />
+                    <img src={user?.photo} className="w-full rounded-full" al t="" />
                   </figure>
                 </Link>
                 <button

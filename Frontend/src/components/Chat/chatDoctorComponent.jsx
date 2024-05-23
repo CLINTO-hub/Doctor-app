@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { BASE_URL } from '../../../config.js';
 
-const ChatDoctorComponent = ({ doctorId, patientId,patientname }) => {
+const ChatDoctorComponent = ({ doctorId, patientId,patientName }) => {
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(true);
@@ -73,7 +73,7 @@ const ChatDoctorComponent = ({ doctorId, patientId,patientname }) => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">{patientname}</h1>
+      <h1 className="text-2xl font-bold mb-0">{patientName}</h1>
       <div
         className="max mx-auto"
         style={{ paddingTop: "calc(100vh - 200px)", height: "500px", overflowY: "hidden" }}
