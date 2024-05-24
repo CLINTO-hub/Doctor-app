@@ -14,7 +14,7 @@ const FaqItem = ({item}) => {
 
         <div className="flex items-center justify-between gap-5" onClick={toggleAccordion}>
         <h4 className="text-[16px] leading-7 lg:text-[22px] lg:leading-8 text-headingColor">{item.question}</h4>
-        <div className={`${isOpen && 'bg-blue-500 text-white border-none'}w-7 h-7 lg:w-8 lg:h-8 border border-solid border-[#141F21] rounded flex items-center justify-center`}>
+        <div className={`${isOpen && 'border-none'}w-7 h-7 lg:w-8 lg:h-8 border border-solid border-[#141F21] rounded flex items-center justify-center`}>
           {isOpen ? <AiOutlineMinus/> : <AiOutlinePlus/>}
         </div>
         </div>
