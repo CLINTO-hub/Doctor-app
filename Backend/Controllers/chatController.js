@@ -20,6 +20,11 @@ export const sendMessage = async(req,res)=>{
     })
 
     await newMessage.save();
+    
+    req.io.emit("newtext",{sender:senderId,receiver:receiverId,data:newMessage})
+
+
+
     res.status(201).json({success:true,message:'message send sucessfully'});
  }
  catch(error){
@@ -29,6 +34,7 @@ export const sendMessage = async(req,res)=>{
  
 
 }
+
 
 
 export const getMessages = async (req, res) => {
@@ -65,7 +71,7 @@ export const getDoctorMessages = async (req, res) => {
 };
 
 
-export const getDoctorPatientMessages = async (req, res) => {
+export const  getDoctorPatientMessages = async (req, res) => {
   try {
     const { doctorId, patientId } = req.params;
     const messages = await Message.find({

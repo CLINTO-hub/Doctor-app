@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { BASE_URL } from '../../../config.js';
+import {io} from "socket.io-client"
+
+const socket = io("http://localhost:5000")
 
 const ChatComponent = ({ appointment,patientId }) => {
   const [message, setMessage] = useState('');
@@ -79,6 +82,13 @@ const ChatComponent = ({ appointment,patientId }) => {
       setLoadingMessages(false)
     }
   };
+
+
+  socket.on("newtext",(data)=>{
+    if(data){
+      getChatMessages()
+    }
+  })
 
   return (
     <div>

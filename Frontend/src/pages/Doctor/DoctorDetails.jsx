@@ -49,8 +49,9 @@ const DoctorDetails = () => {
                 <img src={photo} alt='' className='w-full'/>
               </figure>
               <div>
-                <span className='bg-[#CCF0F3] text-irisBlueColor py-10 px-10 lg:py-2 lg:px-6 text-[12px] leading-4 lg:text-[16px] lg:leading-10 font-semibold rounded'>
-                  <span className='text-headingColor'>{specialization}</span>
+                <span className='bg-[#CCF0F3] '>
+                <span className='bg-[#CCF0F3] text-irisBlueColor py-10 px-10 lg:py-2 lg:px-6 text-[12px] leading-4 lg:text-[16px] lg:leading-10 font-semibold rounded'>{specialization}</span>
+
                   <h3 className='text-headingColor text-[22px] leading-9 mt-3 font-bold'>
                     {name}
                   </h3>
