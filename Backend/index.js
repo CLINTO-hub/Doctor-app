@@ -14,6 +14,14 @@ import notificationRoute from './Routes/notification.js';
 import walletRoute from './Routes/wallet.js';
 import { Server } from 'socket.io';
 
+import path from "path"
+const currentWorkingDir = path.resolve();
+const parentDir = path.dirname(currentWorkingDir)
+const productionParendDir = path.dirname(parentDir)
+console.log('currentworkingdir:',currentWorkingDir)
+console.log('parendDir:',parentDir)
+console.log('productiondir:',productionParendDir)
+
 dotenv.config();
 
 const app = express();
@@ -54,9 +62,20 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.send('API is Working');
-});
+const enviornment = "production"
+
+if (enviornment === 'production') { 
+    app.use(express.static(path.join(productionParendDir , '/Frontend/dist')));
+  
+    app.get('*', (req, res) =>
+      res.sendFile(path.resolve(productionParendDir   , 'Frontend', 'dist', 'index.html'))
+    );
+ 
+  } else {
+    app.get('/', (req, res) => {
+      res.send('API is running....');
+    });
+  }
 
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/users', userRoute);
@@ -66,6 +85,9 @@ app.use('/api/v1/bookings', bookingRoute);
 app.use('/api/v1/chat', chatRoute);
 app.use('/api/v1/notification', notificationRoute);
 app.use('/api/v1/wallet', walletRoute);
+
+
+
 
 server.listen(port, () => {
   connectDB();
