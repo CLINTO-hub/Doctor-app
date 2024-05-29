@@ -43,7 +43,17 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
+app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/users', userRoute);
+app.use('/api/v1/doctors', doctorRoute);
+app.use('/api/v1/admin', adminRoute);
+app.use('/api/v1/bookings', bookingRoute);
+app.use('/api/v1/chat', chatRoute);
+app.use('/api/v1/notification', notificationRoute);
+app.use('/api/v1/wallet', walletRoute);
+
 io.on("connection", (socket) => {
+
   console.log('A user connected');
 
   socket.on('join', (user) => {
@@ -76,16 +86,6 @@ if (enviornment === 'production') {
       res.send('API is running....');
     });
   }
-
-app.use('/api/v1/auth', authRoute);
-app.use('/api/v1/users', userRoute);
-app.use('/api/v1/doctors', doctorRoute);
-app.use('/api/v1/admin', adminRoute);
-app.use('/api/v1/bookings', bookingRoute);
-app.use('/api/v1/chat', chatRoute);
-app.use('/api/v1/notification', notificationRoute);
-app.use('/api/v1/wallet', walletRoute);
-
 
 
 
