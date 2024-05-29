@@ -65,10 +65,10 @@ app.use((req, res, next) => {
 const enviornment = "production"
 
 if (enviornment === 'production') { 
-    app.use(express.static(path.join(productionParendDir ,'/Frontend/dist')));
+    app.use(express.static(path.join(parentDir ,'/Frontend/dist')));
   
     app.get('*', (req, res) =>
-      res.sendFile(path.resolve(productionParendDir   , 'Frontend', 'dist', 'index.html'))
+      res.sendFile(path.resolve(parentDir,'Frontend', 'dist', 'index.html'))
     );
  
   } else {
