@@ -2,7 +2,7 @@ import React from 'react'
 import DoctorCard from './DoctorCard'
 import { BASE_URL } from '../../../config'
 import useFetchData from '../../hooks/useFetchData'
-import Loader from '../../components/loader/Loading'
+import Loader from '../loader/Loading'
 import Error from '../Error/Error'
 
 

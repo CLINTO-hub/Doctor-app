@@ -13,8 +13,8 @@ import { Link } from 'react-router-dom';
 import { BsArrowRight } from 'react-icons/bs';
 import About from '../components/about/About';
 import ServiceList from '../components/Services/ServicesList';
-import DoctorsList from '../components/doctors/DoctorsList';
-import FaqList from '../components/faq/FaqList';
+import DoctorsList from '../components/doctors/DoctorsList.jsx';
+import FaqList from '../components/faq/FaqList.jsx';
 import Counter from './Counter.jsx'; 
 import { useNavigate } from 'react-router-dom';
 
