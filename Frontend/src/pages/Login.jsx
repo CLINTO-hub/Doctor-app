@@ -27,6 +27,8 @@ const Login = () => {
 
     try {
 
+      console.log(BASE_URL,'baseurl');
+
       
 
       const res = await fetch(`${BASE_URL}/auth/login`,{

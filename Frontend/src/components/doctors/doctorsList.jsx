@@ -8,7 +8,10 @@ import Error from '../Error/Error'
 
 const DoctorsList = () => {
 
+
   const {data:doctors,loading,error} = useFetchData(`${BASE_URL}/doctors`)
+
+console.log('base',BASE_URL);
 
    
 
