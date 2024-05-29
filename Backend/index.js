@@ -65,7 +65,7 @@ app.use((req, res, next) => {
 const enviornment = "production"
 
 if (enviornment === 'production') { 
-    app.use(express.static(path.join(productionParendDir , '/Doctor-app/Frontend/dist')));
+    app.use(express.static(path.join(productionParendDir , 'Doctor-app/Frontend/dist')));
   
     app.get('*', (req, res) =>
       res.sendFile(path.resolve(productionParendDir   , 'Frontend', 'dist', 'index.html'))
