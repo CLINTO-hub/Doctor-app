@@ -9,7 +9,7 @@ import { BASE_URL } from '../../../config.js';
 import {io} from 'socket.io-client';
 
 
-const socket = io("http://localhost:5000");
+const socket = io("https://www.medicare.clintoegeorge.live");
 
 console.log('socket',socket);
 
