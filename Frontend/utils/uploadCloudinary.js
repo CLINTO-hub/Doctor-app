@@ -1,7 +1,14 @@
 const upload_preset = import.meta.env.VITE_UPLOAD_PRESET
 const cloud_name = import.meta.env.VITE_CLOUD_NAME
 
+
 const uploadImageToCloudinary = async file =>{
+
+    console.log('upload',upload_preset);
+
+    console.log('cloud',cloud_name);
+
+
     const uploadData = new FormData()
 
     uploadData.append('file',file)
