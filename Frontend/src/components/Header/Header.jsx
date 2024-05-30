@@ -42,7 +42,7 @@ function Header() {
 
   useEffect(() => {
     if (token && user) {
-      const socket = io("http://localhost:5000");
+      const socket = io("https://www.medicare.clintoegeorge.live");
 
       socket.on('connect', () => {
         console.log('Connected to socket.io server');
@@ -128,8 +128,8 @@ function Header() {
       if (!response.ok) {
         throw new Error('Failed to mark notifications as seen');
       }
-      setNotifications([]); // Clear notifications after marking them as seen
-      setDropdownOpen(false); // Close the dropdown
+      setNotifications([]); 
+      setDropdownOpen(false); 
     } catch (error) {
       console.error('Error marking notifications as seen:', error);
     }
