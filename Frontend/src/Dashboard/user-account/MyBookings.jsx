@@ -63,7 +63,6 @@ const MyBookings = () => {
       if (result.success) {
         console.log(result);
       } else {
-        toast.error('Failed to create notification');
         console.error('Failed to create notification:', result.message);
       }
     } catch (error) {
