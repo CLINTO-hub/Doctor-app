@@ -6,12 +6,11 @@ import MarkUnreadChatAltSharpIcon from '@mui/icons-material/MarkUnreadChatAltSha
 import logo from '../../assets/images/logo.png';
 import { authContext } from '../../context/AuthContext';
 import { BASE_URL } from '../../../config.js';
-import {io} from 'socket.io-client';
-
+import { io } from 'socket.io-client';
 
 const socket = io("https://www.medicare.clintoegeorge.live");
 
-console.log('socket',socket);
+console.log('socket', socket);
 
 const navLinks = [
   { path: '/Home', display: 'Home' },
@@ -31,14 +30,11 @@ function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  console.log('user',user);
+  console.log('user', user);
 
-
- 
   const handleSearch = () => {
     navigate(`/doctors?query=${searchQuery}`);
   };
-
 
   useEffect(() => {
     if (token && user) {
@@ -91,8 +87,6 @@ function Header() {
     navigate('/login');
   };
 
-
-  
   const handleScroll = () => {
     const currentScrollPos = window.pageYOffset;
     setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 80);
@@ -110,7 +104,8 @@ function Header() {
 
   const toggleMenu = () => {
     if (menuRef.current) {
-      menuRef.current.classList.toggle('show__menu');
+      menuRef.current.classList.toggle('translate-x-0');
+      menuRef.current.classList.toggle('translate-x-full');
     } else {
       console.error('menuRef is not properly initialized.');
     }
@@ -128,8 +123,8 @@ function Header() {
       if (!response.ok) {
         throw new Error('Failed to mark notifications as seen');
       }
-      setNotifications([]); 
-      setDropdownOpen(false); 
+      setNotifications([]);
+      setDropdownOpen(false);
     } catch (error) {
       console.error('Error marking notifications as seen:', error);
     }
@@ -137,11 +132,10 @@ function Header() {
 
   const toggleDropdown = () => {
     setDropdownOpen(prevState => !prevState);
-    setTimeout(()=>{
-      markNotificationsAsSeen()
-    },4000)
+    setTimeout(() => {
+      markNotificationsAsSeen();
+    }, 4000);
   };
-  
 
   return (
     <header className={`header flex items-center ${visible ? '' : 'hidden'}`} ref={headerRef}>
@@ -150,8 +144,8 @@ function Header() {
           <div>
             <img src={logo} alt="Logo" style={{ width: '110px', height: 'auto' }} />
           </div>
-          <div className="navigation hidden md:block" ref={menuRef} onClick={toggleMenu}>
-            <ul className="menu flex items-center gap-[2.7rem]">
+          <div className="navigation hidden md:block">
+            <ul className="menu flex items-center gap-10">
               {navLinks.map((link, index) => (
                 <li key={index}>
                   <NavLink
@@ -169,7 +163,7 @@ function Header() {
             <input
               type="search"
               value={searchQuery}
-              onChange={(e)=>setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="relative m-0 block w-full min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
               id="exampleSearch"
               placeholder="Search"
@@ -187,7 +181,7 @@ function Header() {
               <div className="flex items-center justify-between">
                 <Link to={`${role === 'doctor' ? '/doctors/profile/me' : '/users/profile/me'}`}>
                   <figure className="w-[35px] h-[35px] rounded-full cursor-pointer mr-2">
-                    <img src={user?.photo} className="w-full rounded-full" al t="" />
+                    <img src={user?.photo} className="w-full rounded-full" alt="" />
                   </figure>
                 </Link>
                 <button
@@ -232,6 +226,25 @@ function Header() {
               <BiMenu className="w-6 h-6 cursor-pointer" />
             </span>
           </div>
+        </div>
+        <div
+          ref={menuRef}
+          className="fixed top-0 right-0 w-64 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 md:hidden"
+        >
+          <ul className="menu flex flex-col p-4">
+            {navLinks.map((link, index) => (
+              <li key={index} className="mb-4">
+                <NavLink
+                  to={link.path}
+                  activeClassName="text-blue-600 font-bold"
+                  className="text-black-500 text-base leading-4 font-medium hover:text-blue-600 whitespace-nowrap"
+                  onClick={toggleMenu}
+                >
+                  {link.display}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </header>
