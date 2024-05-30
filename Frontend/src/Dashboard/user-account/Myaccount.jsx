@@ -68,7 +68,7 @@ const Myaccount = () => {
               </p>
               <p className='text-textColor text-[15px] leading-6 font-medium'>
                 My Wallet:
-                <span className='ml-2 text-headingColor text-[20px] leading-8'>{balance !== null ? `${balance} ₹` : 'Loading...'}</span>
+                <span className='ml-2 text-headingColor text-[20px] leading-8'>{balance !== null ? `${balance} ₹` : '0 ₹'}</span>
               </p>
             </div>
 
