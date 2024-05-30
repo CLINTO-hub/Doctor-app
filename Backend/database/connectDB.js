@@ -11,7 +11,7 @@ const connectDB = async()=>{
 
         })
         console.log('process',process.env.MONGO_URL);
-        console.log('MongoDB database is connected');
+    console.log('MongoDB database is connected');
     
     } catch (error) {
         console.log('MongoDB database connection failed');
