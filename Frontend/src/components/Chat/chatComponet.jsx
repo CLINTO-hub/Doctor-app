@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { BASE_URL } from '../../../config.js';
 import {io} from "socket.io-client"
 
-const socket = io("http://localhost:5000")
+const socket = io("https://www.medicare.clintogeorge.live")
 
 const ChatComponent = ({ appointment,patientId }) => {
   const [message, setMessage] = useState('');
@@ -13,7 +13,7 @@ const ChatComponent = ({ appointment,patientId }) => {
 
   const [formData, setFormData] = useState({
     senderId: '',
-    receiverId: appointment._id, // Get receiverId from appointment
+    receiverId: appointment._id, 
     message: '',
   });
 
@@ -59,11 +59,11 @@ const ChatComponent = ({ appointment,patientId }) => {
         throw new Error(message);
       }
 
-      setMessage(''); // Reset message input
+      setMessage(''); 
       toast.success(message);
-      // Get updated chat messages after sending new message
+      
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
       toast.error(error.message);
     }
   };
