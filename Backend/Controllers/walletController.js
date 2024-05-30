@@ -41,6 +41,7 @@ export const CurrentBalance = async (req,res)=>{
 
         const finalBalance = await Wallet.findOne({ userId }).sort({ createdAt: -1 });
         const balance = finalBalance.currentWalletAmount
+        console.log('bal',balance);
         return res.status(200).json({success:true, message: "Wallet balance", balance });
         
     } catch (error) {
