@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import { MdNotificationsActive } from 'react-icons/md';
+import { IoClose } from 'react-icons/io5';
 import MarkUnreadChatAltSharpIcon from '@mui/icons-material/MarkUnreadChatAltSharp';
 import logo from '../../assets/images/logo.png';
 import { authContext } from '../../context/AuthContext';
@@ -232,7 +233,18 @@ function Header() {
           className="fixed top-0 right-0 w-64 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 md:hidden"
         >
           <ul className="menu flex flex-col p-4">
-            {navLinks.map((link, index) => (
+            <li className="mb-4 flex justify-between items-center">
+              <NavLink
+                to="/Home"
+                activeClassName="text-blue-600 font-bold"
+                className="text-black-500 text-base leading-4 font-medium hover:text-blue-600 whitespace-nowrap"
+                onClick={toggleMenu}
+              >
+                Home
+              </NavLink>
+              <IoClose className="w-6 h-6 cursor-pointer" onClick={toggleMenu} />
+            </li>
+            {navLinks.slice(1).map((link, index) => (
               <li key={index} className="mb-4">
                 <NavLink
                   to={link.path}

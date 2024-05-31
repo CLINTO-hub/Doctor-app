@@ -21,6 +21,7 @@ import AdminDashboard from '../pages/Admin/AdminDashboard'
 import CheckOutSuccess from '../pages/CheckOutSuccess'
 import Chat from '../components/Chat/chat'
 import ChatDoctor from '../components/Chat/chatDoctor'
+import Error from '../pages/Error/Error.jsx'
 
 const Routers = ()=>{
     return( <Routes>
@@ -39,7 +40,7 @@ const Routers = ()=>{
         <Route path = "/doctors/profile/me" element = {<ProtectedRoute allowedRoles={['doctor']}><Dashboard/></ProtectedRoute>}/>
         <Route path = "/Admin/Login" element = {<AdminLogin/>} />
         <Route path = "/Admin/Dashboard" element = {<AdminDashboard/>} />
-      
+        <Route path ="*" element ={<Error/>}/>
     </Routes>
     )
 }
