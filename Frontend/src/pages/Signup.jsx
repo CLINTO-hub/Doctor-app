@@ -108,6 +108,8 @@ const Signup = () => {
                   required
                 />
               </div>
+
+              
               <div className='mb-5'>
                 <input
                   type='email'
@@ -119,6 +121,8 @@ const Signup = () => {
                   required
                 />
               </div>
+
+
               <div className='mb-5'>
                 <input
                   type='password'
@@ -133,6 +137,7 @@ const Signup = () => {
                   {passwordStrength}
                 </p>
               </div>
+
 
               <div className='mb-5 flex items-center justify-between'>
                 <label className='text-headingColor font-bold text-[16px] leading-7'>
