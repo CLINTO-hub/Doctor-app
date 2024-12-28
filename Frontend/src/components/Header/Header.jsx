@@ -11,7 +11,7 @@ import { io } from 'socket.io-client';
 
 const socket = io("https://www.medicare.clintoegeorge.live");
 
-console.log('socket', socket);
+
 
 const navLinks = [
   { path: '/Home', display: 'Home' },
@@ -31,14 +31,17 @@ function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  console.log('user', user);
+
+  
+  
+  
 
   const handleSearch = () => {
     navigate(`/doctors?query=${searchQuery}`);
   };
 
   useEffect(() => {
-    if (token && user) {
+    if (token !==null && user!==null) {
       const socket = io("https://www.medicare.clintoegeorge.live");
 
       socket.on('connect', () => {

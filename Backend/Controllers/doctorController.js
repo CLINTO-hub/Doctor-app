@@ -14,7 +14,7 @@ try {
     res.status(500).json({sucess:false,message:'Failed to update'})
     
 }
-}
+}   
 
 export const deleteDoctor = async(req,res)=>{
     const id = req.params.id
